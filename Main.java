@@ -36,31 +36,38 @@ public class Main {
 
     public static String formarEquacao(Metal m1, Metal m2) {
 
+        // Quem reduz, quem oxida
         Metal reduz = m1.getPotencialReducao() > m2.getPotencialReducao() ? m1 : m2;
         Metal oxida = reduz == m1 ? m2 : m1;
 
         int eRed = reduz.getCarga();
         int eOx = oxida.getCarga();
 
+        // Balancear elétrons
         int mmc = mmc(eRed, eOx);
         int fatorRed = mmc / eRed;
         int fatorOx = mmc / eOx;
 
-        String semiReducao = fatorRed + reduz.getNome() + "^" + reduz.getCarga() + "+ + "
-                + (fatorRed * eRed) + " e⁻ → "
-                + fatorRed + reduz.getNome();
-
-        String semiOxidacao = fatorOx + oxida.getNome() + " → "
-                + fatorOx + oxida.getNome() + "^" + oxida.getCarga() + "+ + "
+        // Semi-reações
+        String semiOx
+                = fatorOx + oxida.getNome() + "(s) → "
+                + fatorOx + oxida.getNome() + "^" + oxida.getCarga() + "+(aq) + "
                 + (fatorOx * eOx) + " e⁻";
 
-        String global = fatorOx + oxida.getNome() + " + "
-                + fatorRed + reduz.getNome() + "^" + reduz.getCarga() + "+ → "
-                + fatorOx + oxida.getNome() + "^" + oxida.getCarga() + "+ + "
-                + fatorRed + reduz.getNome();
+        String semiRed
+                = fatorRed + reduz.getNome() + "^" + reduz.getCarga() + "+(aq) + "
+                + (fatorRed * eRed) + " e⁻ → "
+                + fatorRed + reduz.getNome() + "(s)";
 
-        return "Oxidação:\n" + semiOxidacao
-                + "\n\nRedução:\n" + semiReducao
+        // Equação global
+        String global
+                = fatorOx + oxida.getNome() + "(s) + "
+                + fatorRed + reduz.getNome() + "^" + reduz.getCarga() + "+(aq) → "
+                + fatorOx + oxida.getNome() + "^" + oxida.getCarga() + "+(aq) + "
+                + fatorRed + reduz.getNome() + "(s)";
+
+        return "Oxidação:\n" + semiOx
+                + "\n\nRedução:\n" + semiRed
                 + "\n\nEquação Global:\n" + global;
     }
 
