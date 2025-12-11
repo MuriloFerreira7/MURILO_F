@@ -9,7 +9,10 @@ public class Main {
     final static Scanner l = new Scanner(System.in);
 
     public static void main(String[] args) {
+        //inicialização das especies
         ArrayList<Metal> metais = lerArquivos("metais.txt");
+
+        //escolha de duas especies
         String[] nomeMetais = new String[metais.size()];
         for (int i = 0; i < metais.size(); i++) {
             nomeMetais[i] = metais.get(i).getNome();
@@ -18,6 +21,8 @@ public class Main {
         Object opcao2 = JOptionPane.showInputDialog(null, null, "escolha outra espécie", JOptionPane.QUESTION_MESSAGE, null, nomeMetais, nomeMetais[0]);
         Metal m1 = procurarMetal((String) opcao1, metais);
         Metal m2 = procurarMetal((String) opcao2, metais);
+
+        //Escolha do estado das especies escolhidas
         String[] opcoes = {"Aquoso", "Solido"};
         Object estadoM1 = JOptionPane.showInputDialog(null, null, "Qual é o estado do " + m1.getNome(), JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
         Object estadoM2 = JOptionPane.showInputDialog(null, null, "Qual é o estado do " + m2.getNome(), JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
@@ -28,6 +33,7 @@ public class Main {
             return;
         }
 
+        //validação de qual espécie reduz e qual oxida
         String msg;
         if (m1.getPotencialReducao() == m2.getPotencialReducao()) {
             msg = "as espécies tem o mesmo potencial de redução. A pilha não funciona";
@@ -39,9 +45,12 @@ public class Main {
             JOptionPane.showMessageDialog(null, msg, "potencial da pilha", JOptionPane.INFORMATION_MESSAGE);
         } else if (m2.getPotencialReducao() > m1.getPotencialReducao()) {
             float potencialPilha = m2.getPotencialReducao() - m1.getPotencialReducao();
-            msg = "O metal que reduz é " + m2.getNome() + "\nO metal que oxida é " + m1.getNome() + "\nO potencial da pilha é " + potencialPilha + "\n";
+            String potencial = String.format("%.2f", potencialPilha);
+            msg = "O metal que reduz é " + m2.getNome() + "\nO metal que oxida é " + m1.getNome() + "\nO potencial da pilha é " + potencial + "V\n";
             JOptionPane.showMessageDialog(null, msg, "potencial da pilha", JOptionPane.INFORMATION_MESSAGE);
         }
+
+        //calculo da equação global
         JOptionPane.showMessageDialog(null, formarEquacao(m1, m2), "Equação global", JOptionPane.INFORMATION_MESSAGE);
     }
 
